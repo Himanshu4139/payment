@@ -2,50 +2,49 @@ import React, { useEffect, useState } from "react";
 import QrScanner from "qr-scanner";
 
 const PaytmQRPaymentFromImage = () => {
-  const [qrData, setQrData] = useState(null);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const paymentAmount = 1; // Example: Rs. 50
-  const qrImage = "/img.jpeg"; // Replace with the actual path to your QR code image
+  const [qrData, setQrData] = useState(null); // Scanned QR data
+  const paymentAmount = 1; // Payment amount in INR
+  const qrImage = "/img.jpeg"; // Path to the QR code image
 
+  // UseEffect to scan the QR code image and extract data
   useEffect(() => {
-    const imgElement = document.getElementById("qr-image");
-    if (imgElement) {
-      QrScanner.scanImage(qrImage)
-        .then((result) => {
-          setQrData(result);
-          console.log("Scanned QR Code Data:", result);
-        })
-        .catch((error) => {
-          console.error("Error scanning QR code:", error);
-        });
-    }
+    const scanQRCode = async () => {
+      try {
+        const result = await QrScanner.scanImage(qrImage);
+        setQrData(result);
+        console.log("Scanned QR Code Data:", result);
+      } catch (error) {
+        console.error("Error scanning QR code:", error);
+      }
+    };
+
+    scanQRCode();
   }, [qrImage]);
 
-  // Function to open the payment gateway selection dialog
-  const openPaymentDialog = () => {
+  // Function to handle payment gateway redirection
+  const handlePaymentGateway = () => {
     if (!qrData) {
       alert("QR code data not found. Please try again.");
       return;
     }
-    setIsDialogOpen(true);
-  };
 
-  // Function to handle payment gateway selection
-  const handlePaymentGateway = () => {
-    const orderId = `ORDER${Math.floor(Math.random() * 1000000)}`; // Generate a unique order ID
-    const callbackUrl = "https://payment-ten-blush.vercel.app/"; // Replace with your callback URL
-    let paymentURL = `${qrData}`;
+    // Construct the UPI payment URL
+    const paymentURL = `${qrData}&am=${paymentAmount}&cu=INR`;
 
+    // Log the payment URL for debugging
+    console.log("Constructed Payment URL:", paymentURL);
 
-  
-
-    // Redirect to the selected payment gateway
-    window.location.href = paymentURL;
+    // Use an anchor tag to handle UPI redirection
+    const anchor = document.createElement("a");
+    anchor.href = paymentURL;
+    anchor.click();
   };
 
   return (
     <div style={{ textAlign: "center", marginTop: "50px" }}>
       <h1>Pay with UPI</h1>
+
+      {/* Display QR code image */}
       <div>
         <img
           id="qr-image"
@@ -55,15 +54,11 @@ const PaytmQRPaymentFromImage = () => {
         />
       </div>
 
+      {/* Display payment button only if QR data is available */}
       {qrData && (
         <div>
           <h3>Payment Amount: Rs. {paymentAmount}</h3>
-          <button
-          onClick={()=>{
-            handlePaymentGateway();
-          }}>
-            Pay Rs. {paymentAmount}
-          </button>
+          <button onClick={handlePaymentGateway}>Pay Rs. {paymentAmount}</button>
         </div>
       )}
     </div>
