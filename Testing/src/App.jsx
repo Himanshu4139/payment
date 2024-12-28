@@ -4,7 +4,7 @@ import QrScanner from "qr-scanner";
 const PaytmQRPaymentFromImage = () => {
   const [qrData, setQrData] = useState(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const paymentAmount = 10; // Example: Rs. 50
+  const paymentAmount = 1; // Example: Rs. 50
   const qrImage = "/img.jpeg"; // Replace with the actual path to your QR code image
 
   useEffect(() => {
