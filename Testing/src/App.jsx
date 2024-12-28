@@ -33,7 +33,7 @@ const PaytmQRPaymentFromImage = () => {
   // Function to handle payment gateway selection
   const handlePaymentGateway = () => {
     const orderId = `ORDER${Math.floor(Math.random() * 1000000)}`; // Generate a unique order ID
-    const callbackUrl = "http://192.168.29.74:5173/"; // Replace with your callback URL
+    const callbackUrl = "https://payment-ten-blush.vercel.app/"; // Replace with your callback URL
     let paymentURL = `upi://pay?pa=7061506967@ptsbi&pn=Himanshu%20Kumar&am=${paymentAmount}&cu=INR&mode=00&purpose=00`;
 
 
