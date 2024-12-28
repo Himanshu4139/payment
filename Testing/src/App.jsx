@@ -29,8 +29,7 @@ const PaytmQRPaymentFromImage = () => {
     }
 
     // Construct the UPI payment URL
-    const paymentURL = `upi://pay?pa=7061506967@ptsbi&pn=Himanshu%20%20Kumar&mc=0000&mode=01&purpose=00&orgid=159761&cust=1503870329
-&am=${paymentAmount}&cu=INR`;
+    const paymentURL = `${qrData}&am=${paymentAmount}&cu=INR`;
 
     // Log the payment URL for debugging
     console.log("Constructed Payment URL:", paymentURL);
